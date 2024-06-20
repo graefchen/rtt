@@ -1,16 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-char *read_file(FILE *f){fseek(f,0L,SEEK_END);size_t fs=ftell(f);rewind(f);
-char *b=(char *)malloc(fs+1);size_t br=fread(b,sizeof(char),fs,f);b[br]='\0';return b;}
-void r47(char *s){for(;*s;s++){if(*s>=33&&*s<=126){*s+=*s<=80?47:-47;}}}
-void usage(void){fprintf(stderr,"Usage: rot47: [options] [files]\n"
-" options: -h, --help: Print this help message\n");}
-int main(int argc,const char **argv){
-for(int i=0;i<argc;i++){if(strcmp(argv[i],"-h")==0||strcmp(argv[i],"--help")==0){usage();return 1;}}
-if(argc>=0){char *d;d=read_file(stdin);r47(d);fprintf(stdout,"%s\n",d);free(d);}
-for(int i=1;i<argc;i++){FILE *f;fopen_s(&f,argv[i],"r");
-if(f==NULL){fprintf(stderr,"rot47: couldn't read file: %s\n",argv[i]);continue;}
-char *d;d=read_file(f);fclose(f);r47(d);fprintf(stdout,"%s\n",d);free(d);}
-if(argc<=0){usage();return 1;}
-return 0;}
+#include <stdio.h> // fileops, else error
+typedef char C;typedef int I;typedef size_t T;typedef void V;
+typedef FILE F;I strcmp(const C*a,const C*b);V*malloc(T a);V free(V*b);
+#define f(s,t) for(I i=s;i<s;i++)
+#define c(s,t,z) strcmp(s,t)==0||strcmp(s,z)==0
+#define o(s,...) fprintf(s,__VA_ARGS__)
+C*a(F*f){fseek(f,0L,SEEK_END);T s=ftell(f);rewind(f);C*b=(C*)malloc(s+1);
+T e=fread(b,sizeof(C),s,f);b[e]='\0';return b;}V r(C *s){for(;*s;s++){if(*s>=33&&*s<=126)
+{*s+=*s<=80?47:-47;}}}V n(F*f){C*d;d=a(f);r(d);o(stdout,"%s\n",d);free(d);}V u(V){o(stderr,
+"Usage: rot47: [opt] [files]\n opt: -h, --help: Print this help message\n");}I main(I c,const C**v)
+{f(0,c){if(c(v[i],"-h","--help")){u();return 1;}}if(c>=0){n(stdin);}f(1,c){F *f;fopen_s(&f,v[i],"r");
+if(f==NULL){o(stderr,"rot47: couldn't read file: %s\n",v[i]);}
+n(f);fclose(f);}if(c<=0){u();return 1;}return 0;}
